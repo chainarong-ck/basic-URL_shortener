@@ -8,6 +8,7 @@ import { redirectShort } from "./controllers/urlController";
 import { redirectCache } from "./middleware/cache";
 import logger from "./utils/logger";
 import { config } from "./config";
+import path from "path";
 
 const app: Application = express();
 
@@ -34,6 +35,9 @@ app.use(
     crossOriginResourcePolicy: { policy: "cross-origin" }, // อนุญาตโหลด static จากโดเมนเดียวกัน/ย่อย (ปรับได้ตาม use case)
   })
 );
+
+// Static single-page UI (avoid redefining __dirname in CJS test env)
+app.use(express.static(path.join(process.cwd(), "public")));
 
 // Rate limiter api: จำกัดเฉพาะเส้นทาง /api
 app.use("/api", apiLimiter);

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <title>URL Shortener</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Simple URL shortener interface" />
+    <meta name="color-scheme" content="light dark" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🔗</text></svg>"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="flex" style="flex-wrap: wrap; gap: 1rem">
+      <div class="flex" style="gap: 0.6rem; align-items: center">
+        <span class="status-dot" id="onlineStatus" aria-hidden="true"></span>
+        <h1 style="margin: 0.2rem 0">URL Shortener</h1>
+      </div>
+      <div class="spacer"></div>
+      <button
+        id="themeToggle"
+        class="toggle-theme secondary"
+        type="button"
+        aria-pressed="false"
+        title="Toggle dark mode"
+      >
+        🌗 Theme
+      </button>
+    </header>
+
+    <form
+      id="shorten-form"
+      novalidate
+      aria-describedby="formHelp"
+      class="fade-in"
+    >
+      <fieldset>
+        <label for="originalUrl">Original URL</label>
+        <input
+          type="url"
+          id="originalUrl"
+          name="originalUrl"
+          placeholder="https://example.com"
+          required
+          autocomplete="off"
+          inputmode="url"
+          aria-required="true"
+        />
+      </fieldset>
+      <fieldset>
+        <label for="customCode">Custom Code (optional)</label>
+        <input
+          type="text"
+          id="customCode"
+          name="customCode"
+          placeholder="my-alias"
+          pattern="[A-Za-z0-9_-]{3,32}"
+          maxlength="32"
+          autocomplete="off"
+        />
+      </fieldset>
+      <button type="submit" id="submitBtn" style="align-self: flex-end">
+        Shorten
+      </button>
+      <div
+        style="flex: 1 1 100%; font-size: 0.7rem; color: var(--muted)"
+        id="formHelp"
+      >
+        Custom code: 3-32 chars [A-Z a-z 0-9 _ -]
+      </div>
+    </form>
+
+    <div
+      id="liveMessage"
+      class="message"
+      role="status"
+      aria-live="polite"
+      style="display: none"
+    ></div>
+    <div
+      id="result"
+      class="result"
+      style="display: none"
+      role="region"
+      aria-label="Short URL result"
+    ></div>
+
+    <section class="toolbar" aria-label="Table tools">
+      <input
+        type="search"
+        id="search"
+        placeholder="Filter URLs (original or shortcode)"
+        aria-label="Filter URLs"
+      />
+      <button
+        type="button"
+        id="refreshBtn"
+        class="secondary"
+        title="Reload list"
+      >
+        ↻ Refresh
+      </button>
+      <button
+        type="button"
+        id="clearFilterBtn"
+        class="secondary"
+        title="Clear search"
+        style="display: none"
+      >
+        ✕ Clear
+      </button>
+    </section>
+
+    <h2 style="margin-top: 1.2rem">Existing URLs</h2>
+    <div
+      style="
+        overflow-x: auto;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+      "
+    >
+      <table id="urls-table" aria-describedby="tableStatus">
+        <thead>
+          <tr>
+            <th scope="col" class="sortable" data-sort="id">ID</th>
+            <th scope="col">Original</th>
+            <th scope="col" class="sortable" data-sort="short">Short</th>
+            <th scope="col" class="sortable" data-sort="clicks">Clicks</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div id="tableStatus" class="sr-only" aria-live="polite"></div>
+
+    <template id="rowTemplate">
+      <tr>
+        <td class="mono" data-col="id"></td>
+        <td data-col="original"></td>
+        <td data-col="short"></td>
+        <td data-col="clicks" class="mono"></td>
+        <td data-col="actions"></td>
+      </tr>
+    </template>
+
+    <script src="main.js" defer></script>
+  </body>
+</html>
