@@ -1,18 +1,17 @@
 /** In-memory redirect cache (single-instance). ใช้ Redis ใน multi-instance production. */
 import type { Request, Response, NextFunction } from "express";
 import { getUrlByShortCode, incrementClick } from "../services/urlService";
+import { config } from "../config";
 
 interface CacheEntry {
   value: string;
   expires: number;
 }
 const cache = new Map<string, CacheEntry>();
-const TTL_MS = Number(process.env.REDIRECT_CACHE_TTL_MS || 10_000); // 10s default
-const MAX_ITEMS = Number(process.env.REDIRECT_CACHE_MAX || 500);
+const TTL_MS = config.REDIRECT_CACHE_TTL_MS; // validated default in config
+const MAX_ITEMS = config.REDIRECT_CACHE_MAX;
 // Interval for background sweeping of expired entries: default half of TTL
-const SWEEP_MS = Number(
-  process.env.REDIRECT_CACHE_SWEEP_MS || Math.max(1000, Math.floor(TTL_MS / 2))
-);
+const SWEEP_MS = config.REDIRECT_CACHE_SWEEP_MS;
 let sweepTimer: NodeJS.Timeout | undefined;
 
 function gcIfNeeded() {
@@ -92,7 +91,7 @@ export function _cacheStats() {
 }
 
 // เริ่ม sweeper อัตโนมัติเมื่อรันแอป (ยกเว้นในสภาพแวดล้อมทดสอบ)
-if (process.env.NODE_ENV !== "test") {
+if (config.NODE_ENV !== "test") {
   // ไม่ throw หากเรียกซ้ำจากที่อื่น
   startRedirectCacheSweeper();
 }

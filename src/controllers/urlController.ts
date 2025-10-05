@@ -11,12 +11,13 @@ import {
   incrementClick,
 } from "../services/urlService";
 import type { Url } from "../../generated/prisma";
+import { config } from "../config";
 
 // Cache base URL (ลดการคำนวณซ้ำ)
 let cachedBase = "";
 function baseUrl(): string {
   if (!cachedBase) {
-    cachedBase = (process.env.APP_BASE_URL || "").replace(/\/$/, "");
+    cachedBase = (config.APP_BASE_URL || "").replace(/\/$/, "");
   }
   return cachedBase;
 }
