@@ -8,7 +8,7 @@ const isTest = config.NODE_ENV === "test";
 const silent = isTest && config.TEST_VERBOSE_LOG !== "1";
 
 const logger = pino({
-  level: silent ? "silent" : config.LOG_LEVEL || "info",
+  level: silent ? "silent" : config.LOG_LEVEL,
   transport:
     !silent && config.NODE_ENV !== "production"
       ? {

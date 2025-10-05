@@ -10,9 +10,10 @@ dotenv.config();
 const EnvSchema = z.object({
   NODE_ENV: z.string().default("development"),
   APP_PORT: z.coerce.number().int().positive().default(3000),
-  LOG_LEVEL: z.string().optional(),
+  LOG_LEVEL: z.string().optional().default("info"),
   TEST_VERBOSE_LOG: z.string().default("0"),
   FORCE_EXIT_MS: z.coerce.number().int().positive().default(10000),
+  CORS_ORIGIN: z.string().default("*"),
 });
 
 /** ประมวลผล + แคช config */

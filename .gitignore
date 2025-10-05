@@ -8,3 +8,9 @@ node_modules
 
 # Build output
 dist
+
+# Generated code (Prisma client or other local artifacts)
+generated/
+
+# Prisma (keep schema and migrations, ignore local sqlite dbs)
+prisma/*.db*
