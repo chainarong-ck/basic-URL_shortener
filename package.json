@@ -1,0 +1,40 @@
+{
+  "name": "basic-url_shortener",
+  "version": "1.0.0",
+  "description": "A simple URL shortener service built with Node.js and Express.",
+  "homepage": "https://github.com/chainarong-ck/basic-URL_shortener#readme",
+  "bugs": {
+    "url": "https://github.com/chainarong-ck/basic-URL_shortener/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chainarong-ck/basic-URL_shortener.git"
+  },
+  "license": "Apache-2.0",
+  "author": "Chainarong Kongpol",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node dist/server.js",
+    "dev": "tsx watch src/server.ts",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --noEmit && node build.mjs",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "pino": "^10.0.0",
+    "zod": "^4.1.11"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.6.2",
+    "esbuild": "^0.25.10",
+    "eslint": "^9.37.0",
+    "pino-pretty": "^13.1.1",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.45.0"
+  }
+}
