@@ -23,7 +23,18 @@ export default [
   {
     files: ["tests/**/*.ts"],
     languageOptions: {
-      globals: { ...globals.jest },
+      globals: {
+        // Vitest globals
+        describe: true,
+        it: true,
+        test: true,
+        expect: true,
+        beforeAll: true,
+        beforeEach: true,
+        afterAll: true,
+        afterEach: true,
+        vi: true,
+      },
     },
   },
 ];

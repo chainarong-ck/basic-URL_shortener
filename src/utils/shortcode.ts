@@ -4,8 +4,8 @@
 import { nanoid } from "nanoid";
 import prisma from "../lib/prisma";
 
-const DEFAULT_LENGTH = 7;
-const MAX_RETRIES = 5;
+export const DEFAULT_LENGTH = 7;
+export const MAX_RETRIES = 5;
 
 /**
  * Generate a unique short code.

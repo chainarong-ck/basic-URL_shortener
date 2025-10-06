@@ -69,7 +69,7 @@ async function start(): Promise<void> {
       // ปิดการเชื่อมต่อทั้งหมดที่เชื่อมต่อกับเซิร์ฟเวอร์นี้
       server.closeAllConnections();
     };
-    
+
     // จัดการสัญญาณการปิด
     process.once("SIGINT", () => void shutdown("SIGINT", 0));
     process.once("SIGTERM", () => void shutdown("SIGTERM", 0));

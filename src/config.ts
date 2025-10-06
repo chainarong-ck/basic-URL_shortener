@@ -1,8 +1,4 @@
-import dotenv from "dotenv";
 import { z } from "zod";
-
-// โหลด .env เข้ามา process.env
-dotenv.config();
 
 /**
  * Schema ตรวจสอบ Environment Variables (Production Grade)
@@ -12,7 +8,7 @@ const EnvSchema = z.object({
   NODE_ENV: z.string().default("development"),
   // Application
   APP_PORT: z.coerce.number().int().positive().default(3_000),
-  APP_BASE_URL: z.string().default("http://localhost:3000"),
+  APP_BASE_URL: z.string().default("*"),
   // Database (Prisma)
   DATABASE_URL: z.url(),
   // Logging
