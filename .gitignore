@@ -10,7 +10,10 @@ node_modules
 dist
 
 # Generated code (Prisma client or other local artifacts)
-generated/
+generated
 
 # Prisma (keep schema and migrations, ignore local sqlite dbs)
 prisma/*.db*
+
+# Coverage directory used by test tools
+coverage
