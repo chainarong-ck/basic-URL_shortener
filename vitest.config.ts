@@ -10,6 +10,8 @@ export default defineConfig({
       provider: "v8",
       reporter: ["text", "html", "lcov"],
       reportsDirectory: "./coverage",
+      // Only measure coverage for application source files
+      include: ["src/**/*.ts"],
       exclude: [
         "**/node_modules/**",
         "**/dist/**",
