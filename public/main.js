@@ -56,6 +56,9 @@
       }
       throw err;
     }
+
+    if (res.status === 204 || res.status === 205 || res.status === 304)
+      return {}; // No Content
     return res.json();
   }
 
@@ -215,12 +218,13 @@
     if (btn.dataset.delete) {
       if (!confirm("Delete this URL?")) return;
       try {
-        await fetch(apiBase + "/urls/" + btn.dataset.delete, {
+        await api("/urls/" + btn.dataset.delete, {
           method: "DELETE",
         });
         setLive("Deleted", "success");
         await load(false);
-      } catch {
+      } catch (err) {
+        console.error(err);
         setLive("Delete failed", "error");
       }
     }

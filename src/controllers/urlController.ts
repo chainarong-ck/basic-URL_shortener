@@ -95,7 +95,7 @@ export async function updateOne(
 export async function remove(req: Request, res: Response, next: NextFunction) {
   try {
     await deleteUrl(req.params.id);
-    res.status(204).json();
+    res.status(204).send();
   } catch (err) {
     next(err);
   }
