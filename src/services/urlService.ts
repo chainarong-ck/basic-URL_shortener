@@ -70,6 +70,9 @@ export async function updateUrl(
   data: UpdateUrlInput
 ): Promise<Url> {
   const numericId = parseId(id);
+  // เตรียมข้อมูลที่จะอัปเดต โดย map customCode -> shortCode ให้ตรงกับ schema
+  const updateData: { originalUrl?: string; shortCode?: string } = {};
+  if (data.originalUrl) updateData.originalUrl = data.originalUrl;
   if (data.customCode) {
     const existing = await prisma.url.findUnique({
       where: { shortCode: data.customCode },
@@ -78,8 +81,9 @@ export async function updateUrl(
       throw new Error("CUSTOM_CODE_CONFLICT");
     // generateUniqueShortCode จะโยน CUSTOM_CODE_CONFLICT หากมีอยู่แล้ว
     await generateUniqueShortCode(data.customCode);
+    updateData.shortCode = data.customCode;
   }
-  return prisma.url.update({ where: { id: numericId }, data });
+  return prisma.url.update({ where: { id: numericId }, data: updateData });
 }
 
 /** ลบ URL แบบ idempotent: หากไม่พบก็ไม่ error */

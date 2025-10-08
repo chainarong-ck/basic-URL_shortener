@@ -140,7 +140,7 @@ describe("services/urlService", () => {
 		expect(generateUniqueShortCode).toHaveBeenCalledWith("newcode");
 		expect(prisma.url.update).toHaveBeenCalledWith({
 			where: { id: 4 },
-			data: { customCode: "newcode" },
+			data: { shortCode: "newcode" },
 		});
 		expect(updated.shortCode).toBe("newcode");
 	});
