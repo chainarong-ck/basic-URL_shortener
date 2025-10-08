@@ -47,7 +47,7 @@ export async function getOne(req: Request, res: Response, next: NextFunction) {
   try {
     const found = await getUrlById(req.params.id);
     if (!found) return res.status(404).json({ error: "Not Found" });
-    res.json(serialize(found));
+    res.status(200).json(serialize(found));
   } catch (err) {
     next(err);
   }
@@ -64,7 +64,7 @@ export async function list(req: Request, res: Response, next: NextFunction) {
     const page = parseInt(String(req.query.page || "1"));
     const limit = parseInt(String(req.query.limit || "20"));
     const result = await listUrls(page, limit);
-    res.json({
+    res.status(200).json({
       ...result,
       items: result.items.map(serialize),
     });
@@ -85,7 +85,7 @@ export async function updateOne(
   try {
     const parsed = updateUrlSchema.parse(req.body);
     const updated = await updateUrl(req.params.id, parsed);
-    res.json(serialize(updated));
+    res.status(200).json(serialize(updated));
   } catch (err) {
     next(err);
   }
@@ -95,7 +95,7 @@ export async function updateOne(
 export async function remove(req: Request, res: Response, next: NextFunction) {
   try {
     await deleteUrl(req.params.id);
-    res.status(204).send();
+    res.status(204).json();
   } catch (err) {
     next(err);
   }
@@ -107,7 +107,7 @@ export async function stats(req: Request, res: Response, next: NextFunction) {
     const found = await getUrlById(req.params.id);
     if (!found) return res.status(404).json({ error: "Not Found" });
     const { clickCount, createdAt, lastAccessed, id } = found;
-    res.json({ id, clickCount, createdAt, lastAccessed });
+    res.status(200).json({ id, clickCount, createdAt, lastAccessed });
   } catch (err) {
     next(err);
   }
