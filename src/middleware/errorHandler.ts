@@ -5,6 +5,7 @@
  */
 import type { Request, Response, NextFunction } from "express";
 import logger from "../utils/logger";
+import { config } from "../config";
 
 export function notFound(_req: Request, res: Response, _next: NextFunction) {
   res.status(404).json({ error: "Not Found" });
@@ -17,13 +18,24 @@ export function errorHandler(
   res: Response,
   _next: NextFunction
 ) {
-  // บันทึก error ทั้งก้อน (หาก production อาจพิจารณา redaction ข้อมูลส่วนบุคคลถ้ามี)
-  logger.error(err);
+  // บันทึก error ทั้งก้อน เฉพาะในโหมดพัฒนา หรือเมื่อเปิด verbose ในการทดสอบ
+  if (config.NODE_ENV === "development" || config.TEST_VERBOSE_LOG === "1") {
+    logger.error(err);
+  } else {
+    // ในโหมด production ไม่บันทึก error ทั้งก้อน
+    if (err instanceof Error) {
+      logger.error(err.name || err.message || String(err));
+    }
+  }
 
   const isErr = (
     e: unknown
-  ): e is { message?: string; name?: string; errors?: unknown } =>
-    typeof e === "object" && e !== null;
+  ): e is { message?: string; name?: string; errors?: unknown } => {
+    if (err instanceof Error) {
+      return true;
+    }
+    return false;
+  };
 
   if (isErr(err)) {
     // Mapping ข้อความ error ภายใน -> HTTP status + ข้อความสำหรับ client
@@ -44,6 +56,8 @@ export function errorHandler(
         .status(400)
         .json({ error: "Validation error", details: err.errors });
     }
+  } else {
+    logger.error({ err }, "Unknown error");
   }
   res.status(500).json({ error: "Internal Server Error" });
 }
